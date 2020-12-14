@@ -1,0 +1,25 @@
+.div{
+    /* background-color: red; */
+    width: 50px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    height: 100%;
+}
+
+.NavigationItem{
+    box-sizing: border-box;
+    color:#1fc7cf;
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    font-weight: 500;
+}
+.NavigationItem:hover{
+    color: #000;
+    font-weight: 700;
+
+}
+
+
+

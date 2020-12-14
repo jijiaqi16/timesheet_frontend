@@ -1,0 +1,58 @@
+.Timetoolbar{
+    background-color: white;
+    width: 1200px;
+    height: 60px;
+    margin-top: 30px;
+    outline: 1px #a3bdbe solid;
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding:0 10px;
+    box-sizing: border-box;
+}
+.placeholder{
+    height: 100%;
+    width: 40%;
+    margin-left: 2px;
+    border-right: 1px  #a3bdbe dotted;
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding:0 10px;
+}
+
+.placeholder .Input{
+    width: 50%;
+}
+
+.time{
+    
+    height: 100%;
+    width: 25%;
+    margin-left: 2px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.date{
+    height: 100%;
+    width: 15%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+
+
+.add{
+    height: 100%;
+    width: 20%;
+    margin-left: 10px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px  #a3bdbe dotted;
+}
+
