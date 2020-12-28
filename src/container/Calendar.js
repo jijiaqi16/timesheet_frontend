@@ -1,13 +1,16 @@
-import React from 'react'
+import React from 'react';
+
 import Toolbar from '../component/Navigation/Toolbar/Toolbar'
 
+const Calendar = (props) => {
 
-function Index(){
+
     return (
         <React.Fragment>
-            <Toolbar/>
+            <Toolbar />
         </React.Fragment>
-    )
-}
 
-export default Index;
+    );
+};
+
+export default Calendar;

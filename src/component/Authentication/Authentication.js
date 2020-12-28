@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 // import axios from '../../axios/axios-local'
 
@@ -17,19 +18,18 @@ const NormalLoginForm = (props) => {
 
     const OnFinish = (values) => {
         props.onAuth(values["username"], values["password"]);
-
     };
     //judge auth state
     let authRedirect = null;
     let failedLogin = null;
     let iconName = null;
-    //judge user is valid and info is loaded and localstorage auth and user
+    //judge user is valid and info is loaded and localstorage auth and user and loading
     if (props.auth && Object.keys(props.user).length !== 0) {
-        localStorage.setItem('isAuthenticated', true);
-        localStorage.setItem('username', props.user.username);
-        localStorage.setItem('useremail', props.user.email);
+        localStorage.setItem('timesheetisAuthenticated', true);
+        localStorage.setItem('timesheetUsername', props.user.username);
+        localStorage.setItem('timesheetuseremail', props.user.email);
         iconName = (props.user.lastName.substr(0, 1) + props.user.firstName.substr(0, 1)).toUpperCase();
-        localStorage.setItem('iconName', iconName);
+        localStorage.setItem('timesheeticonName', iconName);
         authRedirect = <Redirect to="/employee" />
     }
 
@@ -43,7 +43,6 @@ const NormalLoginForm = (props) => {
         <Form className={classes.loginform} onFinish={OnFinish} name="normalLogin">
 
             <h2 className={classes.title}>Log In</h2>
-
             <Form.Item
                 name="username"
                 rules={[
@@ -73,12 +72,17 @@ const NormalLoginForm = (props) => {
             {failedLogin}
         </Form>)
 
-
+    let bar=(
+        <div className={classes.bar}>
+            <NavLink to="/" className={classes.logo}></NavLink>
+        </div>
+    );
 
 
     return (
         <React.Fragment>
             <div className={classes.div}>
+                {bar}
                 {authRedirect}
                 {form}
             </div>
@@ -92,6 +96,7 @@ const mapStateToProps = state => {
     return {
         auth: state.auth.isAuthenticated,
         error: state.auth.loginError,
+        load: state.auth.loading,
         user: state.user.user
     };
 }

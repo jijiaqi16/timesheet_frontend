@@ -6,12 +6,14 @@ import { Provider } from 'react-redux';
 import { createStore,applyMiddleware,combineReducers } from 'redux';
 import authReducer from './store/reducer/authReducer';
 import userReducer from './store/reducer/userReducer';
+import timeSheetReducer from './store/reducer/timeSheetReducer';
 import thunk from 'redux-thunk';
 
 
 export const rootReducer=combineReducers({
         auth:authReducer,
-        user:userReducer
+        user:userReducer,
+        timesheet:timeSheetReducer
 })
 const store=createStore(rootReducer,applyMiddleware(thunk));
 

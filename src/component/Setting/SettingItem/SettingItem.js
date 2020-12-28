@@ -24,7 +24,7 @@ function Settingitem(props) {
         let config = {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': localStorage["token"]
+                'Authorization': localStorage["timesheettoken"]
             }
         }
         async function fetchData() {

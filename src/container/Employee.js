@@ -6,7 +6,7 @@ import Timesheet from '../component/TimeSheet/Timesheet'
 function employee() {
     return (
         <React.Fragment>
-            <Toolbar displayLogin="none"/>
+            <Toolbar/>
             <Timesheet/>
         </React.Fragment>
     )

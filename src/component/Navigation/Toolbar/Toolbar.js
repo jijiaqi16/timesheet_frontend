@@ -29,8 +29,8 @@ const Toolbar = (props) => {
 
     let userInfo = (
         <div className={classes.menuprofile}>
-            <p className={classes.menuname}>{localStorage['username']}</p>
-            <p className={classes.menumail}>{localStorage['useremail']}</p>
+            <p className={classes.menuname}>{localStorage['timesheetUsername']}</p>
+            <p className={classes.menumail}>{localStorage['timesheetuseremail']}</p>
         </div>
     );
 
@@ -75,7 +75,7 @@ const Toolbar = (props) => {
             </nav>
         </Header>
     );
-    if (localStorage['isAuthenticated']) {
+    if (localStorage['timesheetisAuthenticated']) {
         toolbar = (
             <Header className={classes.header}>
                 <DrawerToggle />
@@ -89,7 +89,7 @@ const Toolbar = (props) => {
                         </Dropdown>
 
                         <Dropdown overlay={menu} placement="bottomLeft" trigger="click">
-                            <Button  size="middle" type="primary" shape="circle" className={classes.profilepic}>{localStorage['iconName']}</Button>
+                            <Button  size="middle" type="primary" shape="circle" className={classes.profilepic}>{localStorage['timesheeticonName']}</Button>
                         </Dropdown>
                     </div>
                 </nav>

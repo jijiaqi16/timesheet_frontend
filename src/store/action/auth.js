@@ -18,9 +18,8 @@ export const auth = (userName, password) => {
             .then(response => {
                 
                 let token = response.headers["token"];
-                
                 if (token !== undefined) {
-                    localStorage.setItem('token',token);
+                    localStorage.setItem('timesheettoken',token);
                     dispatch(authSuccess());
                     dispatch(userGet(param.username,token));
                 }else{
@@ -53,12 +52,19 @@ export const authFail = (loginError)=>{
 
 
 export const authLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('useremail');
-    localStorage.removeItem('iconName');
+    localStorage.removeItem('timesheettoken');
+    localStorage.removeItem('timesheetUsername');
+    localStorage.removeItem('timesheetisAuthenticated');
+    localStorage.removeItem('timesheetuseremail');
+    localStorage.removeItem('timesheeticonName');
     return {
         type: actionTypes.AUTH_LOGOUT
     }
 }
+
+export const authLoading = ()=>{
+    return{
+        type:actionTypes.AUTH_LOADING,
+    }
+}
+

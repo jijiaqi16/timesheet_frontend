@@ -12,7 +12,7 @@ const drawButton = (props) => {
     return (
         <React.Fragment>
             <div className={classes.drawerBody}>
-                <Button icon={props.icon} className={classes.button} href={props.to}>{props.title}</Button>
+                <Button icon={props.icon} className={classes.button} href={props.to} style={{fontWeight:"bolder"}}>{props.title}</Button>
             </div>
         </React.Fragment>
 
