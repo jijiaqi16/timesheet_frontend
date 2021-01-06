@@ -12,20 +12,24 @@ const { Option } = Select;
 
 const Timesheets = (props) => {
     const week = {
-        Su: 1,
-        Mo: 1,
-        Tu: 1,
-        We: 1,
-        Th: 1,
-        Fr: 1,
-        Sa: 1
+        Su: 0,
+        Mo: 0,
+        Tu: 0,
+        We: 0,
+        Th: 0,
+        Fr: 0,
+        Sa: 0
     };
-    let project = ["project1", "project2", "project3"];
+
+    //insert user's project
+    let project = [];
+    Object.keys(props.projectInfo).map((key) => (
+        project.push(props.projectInfo[key]["name"])
+    ));
     let addProjectTemp = [];
     let addTimesheetTemp = {};
-    
 
-    const [selectProject, setSelectProject] = useState("");
+const [selectProject, setSelectProject] = useState("");
     const [addProject, setAddProject] = useState([]);
     const [disableAdd, setDisableAdd] = useState(true);
 
@@ -37,12 +41,6 @@ const Timesheets = (props) => {
             setDisableAdd(false);
         }
     }, [addProject, selectProject])
-
-    //check addTimesheet Array
-    useEffect(() => {
-        // console.log(addTimesheet)
-        console.log(props.timesheet)
-    }, [props.timesheet]);
 
     //Add Timesheet
     const handleClickAdd = () => {
@@ -131,7 +129,7 @@ const Timesheets = (props) => {
 const mapStateToProps = state => {
 
     return {
-        timesheet:state.timesheet.timesheet
+        timesheet: state.timesheet.timesheet
     };
 }
 

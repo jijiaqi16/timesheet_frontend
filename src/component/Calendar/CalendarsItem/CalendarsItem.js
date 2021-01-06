@@ -6,18 +6,17 @@ import { Spin } from 'antd';
 import classes from './CalendarsItem.module.css';
 import Week from './Week/Week';
 import Time from './Time/Time'
-
-
+import TotalTime from './Time/TotalTime';
+import CreateTimesheet from './CreateTimesheet/CreateTimesheet';
 
 const CalendarsItem = (props) => {
-
     //set show Timesheet
     let showTimesheet = null;
     if (props.loading) {
         showTimesheet = (
             <div className={classes.loading}>
-                 <Week />
-                <Spin size="large" style={{marginTop:"10%"}}/>
+                <Week />
+                <Spin size="large" style={{ marginTop: "10%" }} />
             </div>
         );
     } else {
@@ -27,15 +26,17 @@ const CalendarsItem = (props) => {
                     <Week />
                     {Object.keys(props.show).map((key) =>
                     (
-                        <Time key={key} title={key} show={props.show[key]} />
+                        <Time key={key} title={key} show={props.show[key]} projectInfo={props.projectInfo} isProject={key==='Total(/day)'?false:true}/>
                     )
                     )}
+                    <TotalTime show={props.show['Total(/day)']} />
                 </div>);
         } else {
             showTimesheet = (
                 <div className={classes.emptyBacground}>
                     <Week />
-                    <p className={classes.noRecord}>NO RECORD</p>
+                    <CreateTimesheet projectInfo={props.projectInfo}/>
+                    {/* <p className={classes.noRecord}>NO RECORD</p> */}
                 </div>
             );
         }

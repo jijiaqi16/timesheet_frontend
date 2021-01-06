@@ -23,9 +23,9 @@ const InputTime = (props) => {
             {title}
             <InputNumber
                 width="10"
-                min={1}
+                min={0}
                 max={24}
-                defaultValue={1}
+                defaultValue={0}
                 className={classes.inputTime} 
                 onChange={ChangeTime}
                 />

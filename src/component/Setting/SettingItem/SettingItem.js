@@ -28,7 +28,7 @@ function Settingitem(props) {
             }
         }
         async function fetchData() {
-            const response = await axios.post('/getuser', localStorage['username'], config);
+            const response = await axios.post('/getuser', localStorage['timesheetUsername'], config);
             setUser(response.data);
         }
         fetchData();
