@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { SelectOutlined} from '@ant-design/icons';
+
 import classes from './Week.module.css';
 
 
@@ -33,14 +35,14 @@ const week = [
 
 const Week = (props) => {
 
-    let result=["Project"];
+    let result = ["Project"];
 
-    if(props.weekdate.length!==0){
-        for(let i=1;i<8;i++){
-            result.push(week[i].title+","+props.weekdate[i-1]);
+    if (props.weekdate.length !== 0) {
+        for (let i = 1; i < 8; i++) {
+            result.push(week[i].title + "," + props.weekdate[i - 1]);
         }
-    }else{
-        for(let i=1;i<8;i++){
+    } else {
+        for (let i = 1; i < 8; i++) {
             result.push(week[i].title);
         }
     }
@@ -55,6 +57,8 @@ const Week = (props) => {
                         <div key={item} className={classes.body}>{item}</div>
                     )
                 )}
+                <div className={classes.choice} ><SelectOutlined size="large"/></div>
+
             </div>
         </React.Fragment>
 

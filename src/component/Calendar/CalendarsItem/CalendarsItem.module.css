@@ -33,4 +33,11 @@
     background-color: #e4eaee;
     opacity: 0.5;
 }
-
+.totalSpace{
+    height: 100px;
+    width: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+}

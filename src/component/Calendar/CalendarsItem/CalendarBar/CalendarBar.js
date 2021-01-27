@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { DatePicker, Button} from 'antd';
+import { DatePicker, Button } from 'antd';
 import { PlusOutlined, SaveOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -20,9 +20,8 @@ const CalenderBar = (props) => {
     const [disableInsertButton, setDisableInsertButton] = useState(true);
     const [disableSaveButton, setDisableSaveButton] = useState(true);
 
+ 
 
-
-    //check if showTimesheet is null set Button status
     useEffect(() => {
         if (Object.keys(props.weekdate).length === 0 || props.loading) {
             setDisableInsertButton(true);
@@ -31,17 +30,37 @@ const CalenderBar = (props) => {
         }
         if (Object.keys(props.weekdate).length !== 0 && !props.loading) {
             if (Object.keys(props.show).length === 0) {
-                setDisableInsertButton(false);
-                setDisableSaveButton(true);
-
+        
+                if(props.createDisable){
+                    setDisableInsertButton(true);
+                }else{
+                    setDisableInsertButton(false);
+                }
+                if(props.saveDisable){
+                    setDisableSaveButton(true);
+                }else{
+                    setDisableSaveButton(false);
+                }
             }
-            if (Object.keys(props.show).length !== 0) {
-                setDisableInsertButton(true);
-                setDisableSaveButton(false);
-
+            else {
+    
+                if(props.createDisable){
+                    setDisableInsertButton(true);
+                }else{
+                    setDisableInsertButton(false);
+                }
+                if(props.saveDisable){
+                    setDisableSaveButton(true);
+                }else{
+                    setDisableSaveButton(false);
+                }
             }
+
+
         }
-    }, [props.show, props.weekdate, props.loading])
+
+    }, [props.show, props.weekdate, props.loading, props.saveDisable, props.createDisable])
+
 
     //change week
     const handleWeekChange = weekData => {
@@ -71,61 +90,45 @@ const CalenderBar = (props) => {
 
     }
 
-
-    // const handleSubmitTimesheet = () => {
-    //     timesheet = { ...props.timesheet };
-    //     timesheet.endDate = date.end
-    //     timesheet.startDate = date.start;
-    //     timesheet.username = localStorage.getItem("timesheetUsername")
-    //     props.SubmitTimesheet(timesheet);
-    //     // console.log(date);  
-    //     // console.log(timesheet);
-    //     console.log("Submit");
-    //     props.ShowTimeSheetLoading();
-    //     setTimeout(() => {
-    //         props.ShowTimesheet(date.start);
-    //     }, 2000);
-    // };
-    const handleClickCreateButton=()=>{
-        console.log(props.projectInfo);
-        console.log(props.show);
+    const handleClickCreateButton = () => {
+        props.createTimesheetStart();
+        props.createButtonDisable(true);
     }
 
 
     //save Timesheet
     const handleClickSaveButton = () => {
-        console.log(props.show);
-        const { "Total(/day)": total, ...saveTemp } = { ...props.show };
-        props.saveTimesheet(saveTemp,date.start);
+        let saveResult = {};
+        if (props.create) {
+            console.log(props.timesheet);
+            props.createSubmitTimesheet(props.timesheet, date.start, date.end);
+        } else {
+            const { "Total(/day)": total, ...saveTemp } = { ...props.show };
+            Object.keys(saveTemp).map((key) => (
+                saveTemp[key].username = localStorage["timesheetUsername"]
+            ))
+            saveTemp.Info = { ...date, username: localStorage["timesheetUsername"] };
+            if (Object.keys(props.editTimesheet).length !== 0) {
+                let createEditTimesheet = {};
+                createEditTimesheet = { ...props.editTimesheet };
+                createEditTimesheet.startDate = date.start;
+                createEditTimesheet.endDate = date.end;
+                createEditTimesheet.username = localStorage["timesheetUsername"]
+                saveResult = { ...saveTemp, CreateEditTimesheet: createEditTimesheet };
+            } else {
+                saveResult = { ...saveTemp };
+            }
+
+            props.saveTimesheet(saveResult, date.start);
+        }
     }
-
-    // let modal = (
-    //     <Modal
-    //         width={1000}
-    //         title={modaltitle}
-    //         visible={isModalVisible}
-    //         onOk={handleSubmitTimesheet}
-    //         okButtonProps={{ disabled: Object.keys(props.timesheet).length === 0 ? true : false }}
-    //         okText="SUBMIT"
-    //         onCancel={handleCancel}
-    //         destroyOnClose
-    //     >
-    //         <Timesheets
-    //             showDate={showDate}
-    //             handleSubmit={handleSubmitTimesheet}
-    //             projectInfo={props.projectInfo}
-    //         />
-    //     </Modal>
-    // );
-
-
 
     return (
         <React.Fragment>
             <p className={classes.p}>{showDate}</p>
             <div className={classes.body}>
                 <Button icon={<SaveOutlined />} className={classes.saveButton} type="primary" size="small" onClick={handleClickSaveButton} disabled={disableSaveButton}>SAVE</Button>
-                <Button icon={<PlusOutlined />} className={classes.addButton} type="primary" size="small"  onClick={handleClickCreateButton} disabled={disableInsertButton}>CREATE</Button>
+                <Button icon={<PlusOutlined />} className={classes.addButton} type="primary" size="small" onClick={handleClickCreateButton} disabled={disableInsertButton}>CREATE</Button>
                 <WeekPicker className={classes.datePicker} onChange={handleWeekChange} />
             </div>
 
@@ -141,18 +144,25 @@ const mapStateToProps = state => {
         weekdate: state.timesheet.weekDate,
         timesheet: state.timesheet.timesheet,
         show: state.timesheet.show,
-        loading: state.timesheet.loading
+        loading: state.timesheet.loading,
+        createDisable:state.timesheet.createDisable,
+        saveDisable: state.timesheet.saveDisable,
+        create: state.timesheet.create,
+        editTimesheet: state.timesheet.editCreateTimesheet
+        
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         ChangeWeekDate: (weekdate) => dispatch(timeSheetActions.getWeekdate(weekdate)),
-        SubmitTimesheet: (submitTimesheet) => dispatch(timeSheetActions.submitTimesheet(submitTimesheet)),
         ShowTimesheet: (startDate) => dispatch(timeSheetActions.showTimesheet(startDate)),
         ShowTimeSheetLoading: () => dispatch(timeSheetActions.showTimesheetLoading()),
-        changeTimesheetStart: () => dispatch(timeSheetActions.changeTimesheetStart()),
-        saveTimesheet:(savedTimesheet,startdate)=>dispatch(timeSheetActions.saveTimesheet(savedTimesheet,startdate))
+        createTimesheetStart: () => dispatch(timeSheetActions.createTimesheetStart()),
+        createSubmitTimesheet: (createtimesheet, startDate, endDate) => dispatch(timeSheetActions.createSubmitTimesheet(createtimesheet, startDate, endDate)),
+        saveTimesheet: (savedTimesheet, startdate) => dispatch(timeSheetActions.saveTimesheet(savedTimesheet, startdate)),
+        saveButtonDisable:(saveButton)=>dispatch(timeSheetActions.SetSaveButton(saveButton)),
+        createButtonDisable:(createButton)=>dispatch(timeSheetActions.SetCreateButton(createButton))
     }
 }
 

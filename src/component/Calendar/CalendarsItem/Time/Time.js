@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Popover, Button } from 'antd';
+import { Popover, Button, Popconfirm } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 import classes from './Time.module.css';
 import InputProjectTime from './InputProjectTime';
-
-
-
+import * as timeSheetActions from '../../../../store/action/timesheet';
 
 const Time = (props) => {
+
     //set project infomation
     let client;
     let desc;
@@ -40,31 +40,47 @@ const Time = (props) => {
 
     //change time
 
+    //delete
+    const handleClickCancel = () => {
+        if (Object.keys(props.showTimesheetTime) <= 1) {
+            // props.createTimesheetSaving(true);
+        }
+        let showTemp = { ...props.showTimesheetTime };
+        delete showTemp[props.title];
+        props.editedTimesheet(showTemp);
+
+
+    }
+
     let timeNumber = (
         <React.Fragment>
-            <InputProjectTime show={props.show} title={"su"} projectTitle={props.title}/>
-            <InputProjectTime show={props.show} title={"mo"} projectTitle={props.title}/>
-            <InputProjectTime show={props.show} title={"tu"} projectTitle={props.title}/>
-            <InputProjectTime show={props.show} title={"we"} projectTitle={props.title}/>
-            <InputProjectTime show={props.show} title={"th"} projectTitle={props.title}/>
-            <InputProjectTime show={props.show} title={"fr"} projectTitle={props.title}/>
-            <InputProjectTime show={props.show} title={"sa"} projectTitle={props.title}/>
+            <InputProjectTime show={props.show} title={"su"} projectTitle={props.title} />
+            <InputProjectTime show={props.show} title={"mo"} projectTitle={props.title} />
+            <InputProjectTime show={props.show} title={"tu"} projectTitle={props.title} />
+            <InputProjectTime show={props.show} title={"we"} projectTitle={props.title} />
+            <InputProjectTime show={props.show} title={"th"} projectTitle={props.title} />
+            <InputProjectTime show={props.show} title={"fr"} projectTitle={props.title} />
+            <InputProjectTime show={props.show} title={"sa"} projectTitle={props.title} />
+
+            <div className={classes.choice} >
+                <Popconfirm
+                    title="Are you sure to delete this timesheet?"
+                    onConfirm={handleClickCancel}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Button
+                        style={{ width: "100%", height: "100%" }}
+                        icon={<CloseOutlined
+                            style={{ color: "red" }} />}
+                    />
+
+                </Popconfirm>
+            </div>
+
         </React.Fragment>
     )
-    if (!props.isProject) {
-        project = (<div className={classes.total}>{props.title}</div>);
-        timeNumber = (
-            <React.Fragment>
-                <div className={classes.totalNumber}>{props.show["su"]}</div>
-                <div className={classes.totalNumber}>{props.show["mo"]}</div>
-                <div className={classes.totalNumber}>{props.show["tu"]}</div>
-                <div className={classes.totalNumber}>{props.show["we"]}</div>
-                <div className={classes.totalNumber}>{props.show["th"]}</div>
-                <div className={classes.totalNumber}>{props.show["fr"]}</div>
-                <div className={classes.totalNumber}>{props.show["sa"]}</div>
-            </React.Fragment>
-        );
-    }
+
 
 
 
@@ -85,6 +101,13 @@ const mapStateToProps = state => {
     };
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        editedTimesheet: (editedTimesheet) => dispatch(timeSheetActions.editTimesheet(editedTimesheet)),
+
+    }
+}
 
 
-export default connect(mapStateToProps, null)(Time);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Time);
