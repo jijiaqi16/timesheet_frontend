@@ -16,6 +16,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const NormalLoginForm = (props) => {
 
+
     const OnFinish = (values) => {
         props.onAuth(values["username"], values["password"]);
     };
@@ -23,6 +24,38 @@ const NormalLoginForm = (props) => {
     let authRedirect = null;
     let failedLogin = null;
     let iconName = null;
+ 
+    //test
+    if (props.auth && props.role==="admin") {
+        console.log(props.role)
+        localStorage.setItem('timesheetisAuthenticated', true);
+        localStorage.setItem('timesheetUsername', props.user.username);
+        localStorage.setItem('timesheetuseremail', props.user.email);
+        localStorage.setItem('timesheetuseremail',props.role);
+        iconName = 'AD';
+        localStorage.setItem('timesheeticonName', iconName);
+        authRedirect = <Redirect to="/employee" />
+    }
+    if (props.auth && props.role==="user") {
+        console.log(props.role)
+        localStorage.setItem('timesheetisAuthenticated', true);
+        localStorage.setItem('timesheetUsername', props.user.username);
+        localStorage.setItem('timesheetuseremail', props.user.email);
+        localStorage.setItem('timesheetuseremail',props.role);
+        iconName = 'USER';
+        localStorage.setItem('timesheeticonName', iconName);
+        authRedirect = <Redirect to="/employee" />
+    }
+    //-------------------------------------
+    // if (props.auth && Object.keys(props.user).length !== 0) {
+    //     localStorage.setItem('timesheetisAuthenticated', true);
+    //     localStorage.setItem('timesheetUsername', props.user.username);
+    //     localStorage.setItem('timesheetuseremail', props.user.email);
+    //     iconName = (props.user.lastName.substr(0, 1) + props.user.firstName.substr(0, 1)).toUpperCase();
+    //     localStorage.setItem('timesheeticonName', iconName);
+    //     authRedirect = <Redirect to="/employee" />
+    // }
+    //--------------------------------------
     //judge user is valid and info is loaded and localstorage auth and user and loading
     if (props.auth && Object.keys(props.user).length !== 0) {
         localStorage.setItem('timesheetisAuthenticated', true);
@@ -97,7 +130,8 @@ const mapStateToProps = state => {
         auth: state.auth.isAuthenticated,
         error: state.auth.loginError,
         load: state.auth.loading,
-        user: state.user.user
+        user: state.user.user,
+        role:state.auth.role
     };
 }
 
