@@ -10,6 +10,7 @@ import { NotificationOutlined } from '@ant-design/icons';
 import classes from './Toolbar.module.css';
 import DrawerToggle from '../../DrawerToggle/DrawerToggle';
 import Login from '../../../UI/Link/Login';
+import Register from '../../../UI/Link/Register';
 import * as authActions from '../../../store/action/auth';
 import * as userActions from '../../../store/action/user'
 
@@ -25,7 +26,7 @@ const Toolbar = (props) => {
         props.logout();
     }
 
-    
+
 
     let userInfo = (
         <div className={classes.menuprofile}>
@@ -36,16 +37,16 @@ const Toolbar = (props) => {
 
     let setting = (
         <Menu.Item >
-               <a href="/setting">
+            <a href="/setting">
                 Profile Settings
-                </a>
+            </a>
         </Menu.Item>
     );
     let logout = (
         <Menu.Item onClick={handleClickLogout}>
             <a href="/">
                 Logout
-                </a>
+            </a>
         </Menu.Item>
     )
     const menu = (
@@ -58,20 +59,26 @@ const Toolbar = (props) => {
     /////////////////// notification menu
     const notificationMenu = (
         <Menu className={classes.menu}>
-            
-                <p> 1st menu item</p>
-                <p> 2st menu item</p>
-                <p> 3st menu item</p>
-            
+
+            <p> 1st menu item</p>
+            <p> 2st menu item</p>
+            <p> 3st menu item</p>
+
         </Menu>
     );
+    ///////////////logo
+    let logo = (<NavLink to="/" className={classes.logo}></NavLink>);
+    if(props.role==="admin"||props.role==="user"){
+        logo = (<NavLink className={classes.logo}></NavLink>);
+    }
     ///////////////toolbar     
     let toolbar = (
         <Header className={classes.header}>
             <DrawerToggle display={"none"} />
-            <NavLink to="/" className={classes.logo}></NavLink>
+            {logo}
             <nav className={classes.des}>
                 <Login link="/login" exact >LOGIN </Login>
+                <Register link="/" exact >REGISTER </Register>
             </nav>
         </Header>
     );
@@ -79,17 +86,17 @@ const Toolbar = (props) => {
         toolbar = (
             <Header className={classes.header}>
                 <DrawerToggle />
-                <NavLink to="/" className={classes.logo}></NavLink>
+                <NavLink to="/employee" className={classes.logo}></NavLink>
                 <nav className={classes.des}>
                     <Login link="/login" exact displayLogin={"none"}>LOGIN </Login>
                     <div className={classes.loginButton}>
 
                         <Dropdown overlay={notificationMenu} placement="bottomLeft" trigger="click">
-                            <Button type="link" icon={<NotificationOutlined/>} size="middle"></Button>
+                            <Button type="link" icon={<NotificationOutlined />} size="middle"></Button>
                         </Dropdown>
 
                         <Dropdown overlay={menu} placement="bottomLeft" trigger="click">
-                            <Button  size="middle" type="primary" shape="circle" className={classes.profilepic}>{localStorage['timesheeticonName']}</Button>
+                            <Button size="middle" type="primary" shape="circle" className={classes.profilepic}>{localStorage['timesheeticonName']}</Button>
                         </Dropdown>
                     </div>
                 </nav>
@@ -107,6 +114,7 @@ const mapStateToProps = state => {
 
     return {
         auth: state.auth.authorization,
+        role: state.auth.role,
         user: state.user.user,
         loginstate: state.user.userLoginState
     };

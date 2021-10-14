@@ -12,23 +12,38 @@ export const auth = (userName, password) => {
     //send params instead of payload
     const querystring = require('querystring');
 
+    //test
+   
     return (dispatch) => {
-        dispatch(authStart());
-        axios.post('/login', querystring.stringify(param))
-            .then(response => {
-                
-                let token = response.headers["token"];
-                if (token !== undefined) {
-                    localStorage.setItem('timesheettoken',token);
-                    dispatch(authSuccess());
-                    dispatch(userGet(param.username,token));
-                }else{
-                    dispatch(authFail(response.data));
-                }
-            });
-        return Promise.resolve();
+        dispatch(authStart())
+        if(userName==="admin" && password==="123"){
+            dispatch(authAdminSuccess());
 
+        }else if(userName==="demo1" && password==="123"){
+            dispatch(authUserSuccess());
+        }
+        else{
+            dispatch(authFail());
+        }
     }
+    //----------------------
+    // return (dispatch) => {
+    //     dispatch(authStart());
+    //     axios.post('/login', querystring.stringify(param))
+    //         .then(response => {
+                
+    //             let token = response.headers["token"];
+    //             if (token !== undefined) {
+    //                 localStorage.setItem('timesheettoken',token);
+    //                 dispatch(authSuccess());
+    //                 dispatch(userGet(param.username,token));
+    //             }else{
+    //                 dispatch(authFail(response.data));
+    //             }
+    //         });
+    //     return Promise.resolve();
+
+    // }
 }
 
 export const authStart = () => {
@@ -37,9 +52,15 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = () => {
+export const authAdminSuccess = () => {
     return {
-        type: actionTypes.AUTH_SUCCESS,
+        type: actionTypes.AUTH_ADMINSUCCESS,
+    }
+}
+
+export const authUserSuccess = () => {
+    return {
+        type: actionTypes.AUTH_USERSUCCESS,
     }
 }
 
